@@ -1,0 +1,15 @@
+SELECT
+     sacramento."id_sacramento" AS sacramento_id_sacramento,
+     sacramento."id_cliente" AS sacramento_id_cliente,
+     sacramento."id_personal" AS sacramento_id_personal,
+     sacramento."tip_id_personal" AS sacramento_tip_id_personal,
+     sacramento."id_iglesia" AS sacramento_id_iglesia,
+     sacramento."tipos" AS sacramento_tipos,
+     sacramento."fechasa" AS sacramento_fechasa,
+     sacramento."horas" AS sacramento_horas,
+     sacramento."precios" AS sacramento_precios,
+     sacramento."totals" AS sacramento_totals,
+     sacramento."anios" AS sacramento_anios,
+     sacramento."cantidads" AS sacramento_cantidads
+FROM
+     ""."sacramento" sacramento
