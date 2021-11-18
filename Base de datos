@@ -1,0 +1,666 @@
+/*==============================================================*/
+/* DBMS name:      Microsoft SQL Server 2012                    */
+/* Created on:     15/11/2021 19:41:50                          */
+/*==============================================================*/
+
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('FELIGRESE') and o.name = 'FK_FELIGRES_SACRAMENT_SACRAMEN')
+alter table FELIGRESE
+   drop constraint FK_FELIGRES_SACRAMENT_SACRAMEN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('MANTENIMIENTO') and o.name = 'FK_MANTENIM_IGLESIA_M_IGLESIA')
+alter table MANTENIMIENTO
+   drop constraint FK_MANTENIM_IGLESIA_M_IGLESIA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ROL_FELIGRESE') and o.name = 'FK_ROL_FELI_FELIGRESE_FELIGRES')
+alter table ROL_FELIGRESE
+   drop constraint FK_ROL_FELI_FELIGRESE_FELIGRES
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('SACRAMENTO') and o.name = 'FK_SACRAMEN_TIPO_PERS_TIPO_PER')
+alter table SACRAMENTO
+   drop constraint FK_SACRAMEN_TIPO_PERS_TIPO_PER
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('SACRAMENTO') and o.name = 'FK_SACRAMEN_TRAMITE_S_TRAMITE')
+alter table SACRAMENTO
+   drop constraint FK_SACRAMEN_TRAMITE_S_TRAMITE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('SERVICIOADICIONAL') and o.name = 'FK_SERVICIO_SACRAMENT_SACRAMEN')
+alter table SERVICIOADICIONAL
+   drop constraint FK_SERVICIO_SACRAMENT_SACRAMEN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TIPO_PERSONAL') and o.name = 'FK_TIPO_PER_TIPO_PERS_IGLESIA')
+alter table TIPO_PERSONAL
+   drop constraint FK_TIPO_PER_TIPO_PERS_IGLESIA
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TIPO_PERSONAL') and o.name = 'FK_TIPO_PER_TIPO_PERS_PERSONAL')
+alter table TIPO_PERSONAL
+   drop constraint FK_TIPO_PER_TIPO_PERS_PERSONAL
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TRAMITE') and o.name = 'FK_TRAMITE_TRAMITE2_PERSONAL')
+alter table TRAMITE
+   drop constraint FK_TRAMITE_TRAMITE2_PERSONAL
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('TRAMITE') and o.name = 'FK_TRAMITE_TRAMITE_C_CLIENTE')
+alter table TRAMITE
+   drop constraint FK_TRAMITE_TRAMITE_C_CLIENTE
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('CLIENTE')
+            and   type = 'U')
+   drop table CLIENTE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('FELIGRESE')
+            and   name  = 'SACRAMENTO_FELIGRESE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index FELIGRESE.SACRAMENTO_FELIGRESE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('FELIGRESE')
+            and   type = 'U')
+   drop table FELIGRESE
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('IGLESIA')
+            and   type = 'U')
+   drop table IGLESIA
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('MANTENIMIENTO')
+            and   name  = 'IGLESIA_MANTENIMIENTO_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index MANTENIMIENTO.IGLESIA_MANTENIMIENTO_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('MANTENIMIENTO')
+            and   type = 'U')
+   drop table MANTENIMIENTO
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('PERSONAL')
+            and   type = 'U')
+   drop table PERSONAL
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('ROL_FELIGRESE')
+            and   name  = 'FELIGRESES_ROL_FELIGRESE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index ROL_FELIGRESE.FELIGRESES_ROL_FELIGRESE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('ROL_FELIGRESE')
+            and   type = 'U')
+   drop table ROL_FELIGRESE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('SACRAMENTO')
+            and   name  = 'TRAMITE_SACRAMENTO_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index SACRAMENTO.TRAMITE_SACRAMENTO_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('SACRAMENTO')
+            and   name  = 'TIPO_PERSONAL_SACRAMENTO_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index SACRAMENTO.TIPO_PERSONAL_SACRAMENTO_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('SACRAMENTO')
+            and   type = 'U')
+   drop table SACRAMENTO
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('SERVICIOADICIONAL')
+            and   name  = 'SACRAMENTO_SERVICIOADICIONAL_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index SERVICIOADICIONAL.SACRAMENTO_SERVICIOADICIONAL_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('SERVICIOADICIONAL')
+            and   type = 'U')
+   drop table SERVICIOADICIONAL
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TIPO_PERSONAL')
+            and   name  = 'TIPO_PERSONAL_PERSONAL_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TIPO_PERSONAL.TIPO_PERSONAL_PERSONAL_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TIPO_PERSONAL')
+            and   name  = 'TIPO_PERSONAL2_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TIPO_PERSONAL.TIPO_PERSONAL2_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('TIPO_PERSONAL')
+            and   type = 'U')
+   drop table TIPO_PERSONAL
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TRAMITE')
+            and   name  = 'TRAMITE_CLIENTE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TRAMITE.TRAMITE_CLIENTE_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('TRAMITE')
+            and   name  = 'TRAMITE2_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index TRAMITE.TRAMITE2_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('TRAMITE')
+            and   type = 'U')
+   drop table TRAMITE
+go
+
+/*==============================================================*/
+/* Table: CLIENTE                                               */
+/*==============================================================*/
+create table CLIENTE (
+   ID_CLIENTE           int                  not null,
+   NOMBRESCLI           varchar(35)          not null,
+   APELLIDOSCLI         varchar(35)          not null,
+   DIRECCIONCLI         varchar(35)          not null,
+   TELEFONOCLI          varchar(10)          not null,
+   CORREOCLI            varchar(35)          not null,
+   IDENTIFICADORCLI     varchar(10)          not null,
+   constraint PK_CLIENTE primary key nonclustered (ID_CLIENTE)
+)
+go
+
+
+INSERT INTO CLIENTE(ID_CLIENTE, NOMBRESCLI, APELLIDOSCLI, DIRECCIONCLI, TELEFONOCLI, CORREOCLI, IDENTIFICADORCLI)
+VALUES ('1', 'YULISSA MELINA', 'MOREIRA CASTRO','MANTA', '0932245698', 'YULI@GMAIL.COM', '1316369471');
+INSERT INTO CLIENTE(ID_CLIENTE, NOMBRESCLI, APELLIDOSCLI, DIRECCIONCLI, TELEFONOCLI, CORREOCLI, IDENTIFICADORCLI)
+VALUES ('2', 'DANIELA MARIANELA', 'SANCHEZ ARTEAGA','MANTA', '0978456321', 'MARINELA@GMAIL.COM', '1305678963');
+INSERT INTO CLIENTE(ID_CLIENTE, NOMBRESCLI, APELLIDOSCLI, DIRECCIONCLI, TELEFONOCLI, CORREOCLI, IDENTIFICADORCLI)
+VALUES ('3', 'JESUS ALEXANDER', 'LOPEZ CA�ARTE','MANTA', '0952364123', 'LOPEZ@GGMAIL.COM', '0578963214');
+
+
+/*==============================================================*/
+/* Table: FELIGRESE                                             */
+/*==============================================================*/
+create table FELIGRESE (
+   ID_FELIGRESE         int                  not null,
+   ID_SACRAMENTO        int                  null,
+   NOMBREF              varchar(30)          not null,
+   APELLIDOF            varchar(30)          not null,
+   CEDULAF              varchar(10)          not null,
+   constraint PK_FELIGRESE primary key nonclustered (ID_FELIGRESE)
+)
+go
+
+
+INSERT INTO  FELIGRESE(ID_FELIGRESE, ID_SACRAMENTO, NOMBREF, APELLIDOF, CEDULAF)
+VALUES ('1', '1', 'JOSE BAUSTISTA', 'SANCHEZ PINARGOTE', '0512369874');
+INSERT INTO  FELIGRESE(ID_FELIGRESE, ID_SACRAMENTO, NOMBREF, APELLIDOF, CEDULAF)
+VALUES ('2', '2', 'JUAN PABLO', 'CARDONA ZAPATA', '0245789630');
+INSERT INTO  FELIGRESE(ID_FELIGRESE, ID_SACRAMENTO, NOMBREF, APELLIDOF, CEDULAF)
+VALUES ('3', '3', 'MIGUEL JOSE', 'GANCHOSO LUCAS', '1303263587');
+
+/*==============================================================*/
+/* Index: SACRAMENTO_FELIGRESE_FK                               */
+/*==============================================================*/
+create index SACRAMENTO_FELIGRESE_FK on FELIGRESE (
+ID_SACRAMENTO ASC
+)
+go
+
+
+/*==============================================================*/
+/* Table: IGLESIA                                               */
+/*==============================================================*/
+create table IGLESIA (
+   ID_IGLESIA           int                  not null,
+   NOMBREIGLESIA        varchar(35)          not null,
+   DIRECCIONIGLESIA     varchar(35)          not null,
+   TELEFONOIGLESIA      varchar(10)          not null,
+   CORREOIGLESIA        varchar(25)          not null,
+   DIMENSIONESIGLESIA   varchar(10)          not null,
+   CAPACIDADPIGLESIA    varchar(25)          not null,
+   constraint PK_IGLESIA primary key nonclustered (ID_IGLESIA)
+)
+go
+
+INSERT INTO IGLESIA(ID_IGLESIA, NOMBREIGLESIA, DIRECCIONIGLESIA, TELEFONOIGLESIA, CORREOIGLESIA, DIMENSIONESIGLESIA, CAPACIDADPIGLESIA)
+VALUES ('1', 'MARIA AUXILIADORA', 'MANTA', '0993209428','IGLESIA@GMAIL.COM','100X80', '150 PERSONAS');
+
+/*==============================================================*/
+/* Table: MANTENIMIENTO                                         */
+/*==============================================================*/
+create table MANTENIMIENTO (
+   ID_MANTENIMIENTO     int                  not null,
+   ID_IGLESIA           int                  null,
+   TIPOMANTENIMIENTO    varchar(35)          not null,
+   FECHAMANTE           varchar(35)          not null,
+   HORAMANTE            varchar(35)          not null,
+   constraint PK_MANTENIMIENTO primary key nonclustered (ID_MANTENIMIENTO)
+)
+go
+
+INSERT INTO MANTENIMIENTO (ID_MANTENIMIENTO, ID_IGLESIA, TIPOMANTENIMIENTO, FECHAMANTE, HORAMANTE)
+VALUES ('1', '1', 'PINTURA', '12/10/2021', '10:00');
+INSERT INTO MANTENIMIENTO (ID_MANTENIMIENTO, ID_IGLESIA, TIPOMANTENIMIENTO, FECHAMANTE, HORAMANTE)
+VALUES ('2', '1', 'LIMPIEZA', '20/12/2021', '8:00');
+INSERT INTO MANTENIMIENTO (ID_MANTENIMIENTO, ID_IGLESIA, TIPOMANTENIMIENTO, FECHAMANTE, HORAMANTE)
+VALUES ('3', '1', 'ENGRESADA DE PUERTAS', '11/11/2021', '9:00');
+
+/*==============================================================*/
+/* Index: IGLESIA_MANTENIMIENTO_FK                              */
+/*==============================================================*/
+create index IGLESIA_MANTENIMIENTO_FK on MANTENIMIENTO (
+ID_IGLESIA ASC
+)
+go
+
+/*==============================================================*/
+/* Table: PERSONAL                                              */
+/*==============================================================*/
+create table PERSONAL (
+   ID_PERSONAL          int                  not null,
+   NOMBRESP             varchar(35)          not null,
+   APELLIDOSP           varchar(35)          not null,
+   IDENTIFICACIONP      varchar(10)          not null,
+   DIRECCIONP           varchar(35)          not null,
+   FECHANACIMIENTOP     datetime             not null,
+   FECHAINGRESOP        datetime             not null,
+   TELEFONOP            varchar(10)          not null,
+   CORREOP              varchar(30)          not null,
+   constraint PK_PERSONAL primary key nonclustered (ID_PERSONAL)
+)
+go
+
+INSERT INTO PERSONAL (ID_PERSONAL, NOMBRESP, APELLIDOSP, IDENTIFICACIONP, DIRECCIONP, FECHANACIMIENTOP, FECHAINGRESOP, TELEFONOP, CORREOP)
+VALUES ('1', 'GABRIELA SILVIA', 'CHAVEZ FARFAN', '1314569871','MANTA','20/06/1995','15/05/2019','0954123698','GABIFARFAN@GMAI.COM');
+INSERT INTO PERSONAL (ID_PERSONAL, NOMBRESP, APELLIDOSP, IDENTIFICACIONP, DIRECCIONP, FECHANACIMIENTOP, FECHAINGRESOP, TELEFONOP, CORREOP)
+VALUES ('2', 'GINA PATRICIA', 'LOPEZ SOLEDISPA', '0571238632','MANTA','15/08/1985','01/01/2020','0978962035','GALLINAN@GMAI.COM');
+INSERT INTO PERSONAL (ID_PERSONAL, NOMBRESP, APELLIDOSP, IDENTIFICACIONP, DIRECCIONP, FECHANACIMIENTOP, FECHAINGRESOP, TELEFONOP, CORREOP)
+VALUES ('3', 'KAREN MARIA', 'MOREIRA CENTENO', '0245369702','MANTA','12/02/2000','01/11/2020','0978456321','KAREN@GMAI.COM');
+INSERT INTO PERSONAL (ID_PERSONAL, NOMBRESP, APELLIDOSP, IDENTIFICACIONP, DIRECCIONP, FECHANACIMIENTOP, FECHAINGRESOP, TELEFONOP, CORREOP)
+VALUES ('4', 'LORENA MARIA', 'LOOR LUCAS', '135896217','MANTA','13/8/2019','8/2/2020','098654712','LORENA@GMAI.COM');
+INSERT INTO PERSONAL (ID_PERSONAL, NOMBRESP, APELLIDOSP, IDENTIFICACIONP, DIRECCIONP, FECHANACIMIENTOP, FECHAINGRESOP, TELEFONOP, CORREOP)
+VALUES ('5', 'CARLA LUISA', 'ZAMBRANO CENTENO', '1305987456','MANTA','16/5/2020','20/8/2020','098632574','CARLA@GMAI.COM');
+
+/*==============================================================*/
+/* Table: ROL_FELIGRESE                                         */
+/*==============================================================*/
+create table ROL_FELIGRESE (
+   ID_ROL               int                  not null,
+   ID_FELIGRESE         int                  null,
+   NOMBRER              varchar(20)          not null,
+   APELLIDOR            varchar(20)          not null,
+   CEDULAR              varchar(20)          not null,
+   TIPO_ROL_FELIGRESE   varchar(20)          not null,
+   constraint PK_ROL_FELIGRESE primary key nonclustered (ID_ROL)
+)
+go
+
+
+INSERT INTO ROL_FELIGRESE(ID_ROL, ID_FELIGRESE, NOMBRER, APELLIDOR, CEDULAR, TIPO_ROL_FELIGRESE)
+VALUES('1', '1', 'ELISEO SANTIAGO','PALMA ROMERO','0961234455','PADRINO');
+INSERT INTO ROL_FELIGRESE(ID_ROL, ID_FELIGRESE, NOMBRER, APELLIDOR, CEDULAR, TIPO_ROL_FELIGRESE)
+VALUES('2', '2', 'MATEO FELIPE','CALDERON ROSALES','0978563217','TESTIGO');
+INSERT INTO ROL_FELIGRESE(ID_ROL, ID_FELIGRESE, NOMBRER, APELLIDOR, CEDULAR, TIPO_ROL_FELIGRESE)
+VALUES('3', '3', 'JUAN CARLOS','FIGUEROA MACIAS','0961234455','PADRINO');
+
+/*==============================================================*/
+/* Index: FELIGRESES_ROL_FELIGRESE_FK                           */
+/*==============================================================*/
+create index FELIGRESES_ROL_FELIGRESE_FK on ROL_FELIGRESE (
+ID_FELIGRESE ASC
+)
+go
+
+/*==============================================================*/
+/* Table: SACRAMENTO                                            */
+/*==============================================================*/
+create table SACRAMENTO (
+   ID_SACRAMENTO        int                  not null,
+   ID_PERSONAL          int                  null,
+   ID_IGLESIA           int                  null,
+   ID_CLIENTE           int                  null,
+   TRA_ID_PERSONAL      int                  null,
+   TIPOS                varchar(35)          not null,
+   FECHASA              datetime             not null,
+   HORAS                datetime             not null,
+   PRECIOS              numeric(6,2)         not null,
+   TOTALS               numeric(6,2)         not null,
+   ANIOS                varchar(10)          not null,
+   CANTIDADS            varchar(10)          not null,
+   constraint PK_SACRAMENTO primary key nonclustered (ID_SACRAMENTO)
+)
+go
+
+INSERT INTO SACRAMENTO(ID_SACRAMENTO, ID_PERSONAL, ID_IGLESIA, ID_CLIENTE, TRA_ID_PERSONAL, TIPOS, FECHASA, HORAS, PRECIOS, TOTALS, ANIOS, CANTIDADS)
+VALUES ('1', '1', '1', '1', '1', 'BAUTIZO','12/10/2021','17:00','500','500','2021','15');
+INSERT INTO SACRAMENTO(ID_SACRAMENTO, ID_PERSONAL, ID_IGLESIA, ID_CLIENTE, TRA_ID_PERSONAL, TIPOS, FECHASA, HORAS, PRECIOS, TOTALS, ANIOS, CANTIDADS)
+VALUES ('2', '2', '1', '2', '2', 'CASAMIENTO','25/12/2020','18:00','1000','1000','2020','10');
+INSERT INTO SACRAMENTO(ID_SACRAMENTO, ID_PERSONAL, ID_IGLESIA, ID_CLIENTE, TRA_ID_PERSONAL, TIPOS, FECHASA, HORAS, PRECIOS, TOTALS, ANIOS, CANTIDADS)
+VALUES ('3', '3', '1', '3', '3', 'PRIMERA COMUNION','12/01/2021','17:00','800','200','2021','80');
+INSERT INTO SACRAMENTO(ID_SACRAMENTO, ID_PERSONAL, ID_IGLESIA, ID_CLIENTE, TRA_ID_PERSONAL, TIPOS, FECHASA, HORAS, PRECIOS, TOTALS, ANIOS, CANTIDADS)
+VALUES ('4', '4', '1', '4', '4', 'CONFIRMACION','15/05/2019','19:00','900','1200','2019','90');
+
+
+
+/*==============================================================*/
+/* Index: TIPO_PERSONAL_SACRAMENTO_FK                           */
+/*==============================================================*/
+create index TIPO_PERSONAL_SACRAMENTO_FK on SACRAMENTO (
+ID_PERSONAL ASC,
+ID_IGLESIA ASC
+)
+go
+
+/*==============================================================*/
+/* Index: TRAMITE_SACRAMENTO_FK                                 */
+/*==============================================================*/
+create index TRAMITE_SACRAMENTO_FK on SACRAMENTO (
+ID_CLIENTE ASC,
+TRA_ID_PERSONAL ASC
+)
+go
+
+/*==============================================================*/
+/* Table: SERVICIOADICIONAL                                     */
+/*==============================================================*/
+create table SERVICIOADICIONAL (
+   ID_SERVICIOA         int                  not null,
+   ID_SACRAMENTO        int                  null,
+   TIPOSERA             varchar(30)          not null,
+   FECHASERA            datetime             not null,
+   HORASERA             datetime             not null,
+   PRECIOSERA           numeric(6,2)         not null,
+   CANTIDADSERA         varchar(10)          not null,
+   constraint PK_SERVICIOADICIONAL primary key nonclustered (ID_SERVICIOA)
+)
+go
+
+INSERT INTO SERVICIOADICIONAL(ID_SERVICIOA, ID_SACRAMENTO, TIPOSERA, FECHASERA, HORASERA, PRECIOSERA, CANTIDADSERA)
+VALUES ('1', '1','GRUPO MUSICAL','21/08/2021','8:00','100','2');
+INSERT INTO SERVICIOADICIONAL(ID_SERVICIOA, ID_SACRAMENTO, TIPOSERA, FECHASERA, HORASERA, PRECIOSERA, CANTIDADSERA)
+VALUES ('2', '2','DECORACIONES','24/12/2021','10:00','200','5');
+INSERT INTO SERVICIOADICIONAL(ID_SERVICIOA, ID_SACRAMENTO, TIPOSERA, FECHASERA, HORASERA, PRECIOSERA, CANTIDADSERA)
+VALUES ('3', '3','CORO','15/11/2020','20:00','80','2');
+
+/*==============================================================*/
+/* Index: SACRAMENTO_SERVICIOADICIONAL_FK                       */
+/*==============================================================*/
+create index SACRAMENTO_SERVICIOADICIONAL_FK on SERVICIOADICIONAL (
+ID_SACRAMENTO ASC
+)
+go
+
+/*==============================================================*/
+/* Table: TIPO_PERSONAL                                         */
+/*==============================================================*/
+
+create table TIPO_PERSONAL (
+   ID_PERSONAL          int                  not null,
+   ID_IGLESIA           int                  not null,
+   TIPOPERSONAL         varchar(30)          not null,
+   constraint PK_TIPO_PERSONAL primary key nonclustered (ID_PERSONAL, ID_IGLESIA)
+)
+go
+
+INSERT INTO TIPO_PERSONAL (ID_PERSONAL, ID_IGLESIA, TIPOPERSONAL)
+VALUES ('1', '1', 'ENTERRADOR');
+INSERT INTO TIPO_PERSONAL (ID_PERSONAL, ID_IGLESIA, TIPOPERSONAL)
+VALUES ('2', '1', 'MONJA');
+INSERT INTO TIPO_PERSONAL (ID_PERSONAL, ID_IGLESIA, TIPOPERSONAL)
+VALUES ('3', '1', 'SACERDOTE');
+
+/*==============================================================*/
+/* Index: TIPO_PERSONAL2_FK                                     */
+/*==============================================================*/
+create index TIPO_PERSONAL2_FK on TIPO_PERSONAL (
+ID_IGLESIA ASC
+)
+go
+
+/*==============================================================*/
+/* Index: TIPO_PERSONAL_PERSONAL_FK                             */
+/*==============================================================*/
+create index TIPO_PERSONAL_PERSONAL_FK on TIPO_PERSONAL (
+ID_PERSONAL ASC
+)
+go
+
+/*==============================================================*/
+/* Table: TRAMITE                                               */
+/*==============================================================*/
+create table TRAMITE (
+   ID_CLIENTE           int                  not null,
+   ID_PERSONAL          int                  not null,
+   TIPO_TRAMITE         varchar(30)          not null,
+   FECHATRAMITE         datetime             not null,
+   HORATRAMITE          datetime             not null,
+   ANIO                 varchar(10)          not null,
+   NUMEROT             varchar(10)          not null,
+   constraint PK_TRAMITE primary key nonclustered (ID_CLIENTE, ID_PERSONAL)
+)
+go
+
+INSERT INTO TRAMITE (ID_CLIENTE, ID_PERSONAL, TIPO_TRAMITE, FECHATRAMITE, HORATRAMITE,ANIO,NUMEROT)
+VALUES ('1', '1', 'TRAMITE DE BAUTIZO','10/05/2019','10:00','2019','5');
+INSERT INTO TRAMITE (ID_CLIENTE, ID_PERSONAL, TIPO_TRAMITE, FECHATRAMITE, HORATRAMITE,ANIO,NUMEROT)
+VALUES ('2', '2', 'TRAMITE CASAMIENTO','20/8/2020','12:25','2020','2');
+INSERT INTO TRAMITE (ID_CLIENTE, ID_PERSONAL, TIPO_TRAMITE, FECHATRAMITE, HORATRAMITE,ANIO,NUMEROT)
+VALUES ('3', '3', 'TRAMITE COMUNION','25/10/2021','14:30','2018','2');
+INSERT INTO TRAMITE (ID_CLIENTE, ID_PERSONAL, TIPO_TRAMITE, FECHATRAMITE, HORATRAMITE,ANIO,NUMEROT)
+VALUES ('4', '4', 'TRAMITE MISA','10/10/2021','10:30','2021','6');
+INSERT INTO TRAMITE (ID_CLIENTE, ID_PERSONAL, TIPO_TRAMITE, FECHATRAMITE, HORATRAMITE,ANIO,NUMEROT)
+VALUES ('5', '5', 'MISA SEPELIO','8/9/2021','12:30','2020','7');
+
+/*==============================================================*/
+/* Index: TRAMITE2_FK                                           */
+/*==============================================================*/
+create index TRAMITE2_FK on TRAMITE (
+ID_PERSONAL ASC
+)
+go
+
+/*==============================================================*/
+/* Index: TRAMITE_CLIENTE_FK                                    */
+/*==============================================================*/
+create index TRAMITE_CLIENTE_FK on TRAMITE (
+ID_CLIENTE ASC
+)
+go
+
+alter table FELIGRESE
+   add constraint FK_FELIGRES_SACRAMENT_SACRAMEN foreign key (ID_SACRAMENTO)
+      references SACRAMENTO (ID_SACRAMENTO)
+go
+
+alter table MANTENIMIENTO
+   add constraint FK_MANTENIM_IGLESIA_M_IGLESIA foreign key (ID_IGLESIA)
+      references IGLESIA (ID_IGLESIA)
+go
+
+alter table ROL_FELIGRESE
+   add constraint FK_ROL_FELI_FELIGRESE_FELIGRES foreign key (ID_FELIGRESE)
+      references FELIGRESE (ID_FELIGRESE)
+go
+
+alter table SACRAMENTO
+   add constraint FK_SACRAMEN_TIPO_PERS_TIPO_PER foreign key (ID_PERSONAL, ID_IGLESIA)
+      references TIPO_PERSONAL (ID_PERSONAL, ID_IGLESIA)
+go
+
+alter table SACRAMENTO --NO FUNCION�
+   add constraint FK_SACRAMEN_TRAMITE_S_TRAMITE foreign key (ID_CLIENTE, TRA_ID_PERSONAL)
+      references TRAMITE (ID_CLIENTE, ID_PERSONAL)
+go
+
+alter table SERVICIOADICIONAL
+   add constraint FK_SERVICIO_SACRAMENT_SACRAMEN foreign key (ID_SACRAMENTO)
+      references SACRAMENTO (ID_SACRAMENTO)
+go
+
+alter table TIPO_PERSONAL
+   add constraint FK_TIPO_PER_TIPO_PERS_IGLESIA foreign key (ID_IGLESIA)
+      references IGLESIA (ID_IGLESIA)
+go
+
+alter table TIPO_PERSONAL
+   add constraint FK_TIPO_PER_TIPO_PERS_PERSONAL foreign key (ID_PERSONAL)
+      references PERSONAL (ID_PERSONAL)
+go
+
+alter table TRAMITE
+   add constraint FK_TRAMITE_TRAMITE2_PERSONAL foreign key (ID_PERSONAL)
+      references PERSONAL (ID_PERSONAL)
+go
+
+alter table TRAMITE
+   add constraint FK_TRAMITE_TRAMITE_C_CLIENTE foreign key (ID_CLIENTE)
+      references CLIENTE (ID_CLIENTE)
+go
+
+--Hist�rico de sacramentos atendidos anualmente. En una columna debe aparecer el a�o, 
+--en otra el tipo de sacramento, y en otra la cantidad de sacramentos en ese a�o.
+
+select NOMBRESP,
+   FECHASA,ANIOS,
+   TIPOS,CANTIDADS ,TOTALS
+from SACRAMENTO inner join PERSONAL 
+on SACRAMENTO.ID_SACRAMENTO=PERSONAL.ID_PERSONAL
+group by NOMBRESP,FECHASA,ANIOS,TIPOS,CANTIDADS,TOTALS 
+order by CANTIDADS desc;
+
+
+--Hist�rico de sacramentos atendidos anualmente por sacerdote. En una columna debe aparecer el a�o,
+--en otra el nombre del sacerdote, en otra el tipo de sacramento, y en otra la cantidad de sacramentos que atendi� cada a�o.
+
+select ANIOS,
+NOMBRESP,
+TIPOPERSONAL,
+TIPOS,CANTIDADS,
+(TOTALS) as TOTAL_ANIO 
+from 
+TIPO_PERSONAL,SACRAMENTO inner join PERSONAL
+on SACRAMENTO.ID_SACRAMENTO = PERSONAL.ID_PERSONAL
+where TIPOPERSONAL= 'SACERDOTE'
+group by ANIOS,NOMBRESP,TIPOPERSONAL,TIPOS,CANTIDADS,TOTALS;
+
+--Hist�rico de cantidades de servicios complementarios a cada sacramento 
+--(por ejemplo: coro y adornos para bodas; coros, adornos).
+--En una columna debe aparecer el a�o, en otra el nombre del sacramento, y por cada sacramento el nombre 
+--del servicio complementario, y luego la cantidad de esos servicios que se dieron.
+
+select TIPOSERA,
+ANIOS,
+FECHASERA,
+TIPOS,
+CANTIDADSERA 
+from SACRAMENTO inner join SERVICIOADICIONAL
+on SACRAMENTO.ID_SACRAMENTO = SERVICIOADICIONAL.ID_SERVICIOA
+group by TIPOSERA,ANIOS,FECHASERA,TIPOS,CANTIDADSERA
+order by TIPOSERA;
+
+--Hist�rico de cantidad de misas oficiadas por sacerdote en la iglesia. 
+--En una columna debe aparecer el a�o, en otra el nombre del p�rroco, 
+--en otra el n�mero de misas que dio ese a�o.
+
+
+select top(1) 
+    ANIO,TIPOPERSONAL,
+    NOMBRESP,NUMEROT,
+    TIPO_TRAMITE 
+from TIPO_PERSONAL ,
+TRAMITE inner join PERSONAL
+on PERSONAL.ID_PERSONAL= TRAMITE.ID_CLIENTE
+where TIPO_PERSONAL.TIPOPERSONAL= 'SACERDOTE' 
+GROUP BY ANIO,
+         TIPOPERSONAL,
+         NOMBRESP,NUMEROT,
+         TIPO_TRAMITE 
+ORDER BY TIPO_TRAMITE desc;
+
+
+select * from TRAMITE;
+select * from PERSONAL;
+select * from SACRAMENTO;
+select * from TIPO_PERSONAL;
+select * from SERVICIOADICIONAL;
